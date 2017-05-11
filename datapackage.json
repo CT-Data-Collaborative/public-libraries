@@ -1,0 +1,133 @@
+{
+  "name": "public-libraries",
+  "datapackage_version": "1.0-beta.18",
+  "title": "Public Libraries",
+  "description": "Public Libraries reports the total and per capita service use and finances of public libraries.",
+  "version": "1.0",
+  "licenses": [{
+    "url": "http://opendatacommons.org/licenses/pddl/",
+    "name": "Open Data Commons Public Domain",
+    "version": "1.0",
+    "id": "odc-pddl"
+  }],
+  "sources": [{
+    "name": "ctlib",
+    "web": ""
+  }],
+  "author":[{
+    "name": "Jenna Daly",
+    "email": "jdaly@ctdata.org",
+    "web": "http://ctdata.org"
+  }],
+  "contributor": [],
+  "resources": [{
+    "path": "data/data.csv",
+    "format": "csv",
+    "schema": {
+      "fields": [{
+          "name": "Town",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "FIPS",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "Year",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "Measure Type",
+          "type": "string",
+          "dimension": true
+        }, {
+          "name": "Variable",
+          "type": "string",
+          "dimension": true
+        }, {
+          "name": "Value",
+          "type": "number",
+          "dimension": false
+        }]
+      }
+    }
+  ],
+  "last_modified": "05/11/2017",
+  "ckan_extras": {
+    "full_description": {
+      "ckan_name": "Full Description",
+      "value": "Public libraries provide free borrowing privileges and services to their patrons and receive financial support from local tax funds. Public libraries may be municipal, which are established by and administrative units of local government, or association, which are not units of town government but receive some public funding. Some towns are served by more than one public library. The Public Libraries data set aggregates individual library services and finance data to the town level. Library visits include all persons entering a library for any purpose, including persons attending meetings or activities and persons requiring no staff assistance. Circulation counts all library materials of all formats lent out for use outside the library, including renewals. Registered borrowers are all town residents to whom a library has issued membership. Reference questions counts all interactions in which library staff provide information, knowledge, or recommendations to patrons. Town tax appropriation indicates the funds allotted to the library's operation budget from the town. The Adjusted Equalized Net Grand List per Capita (AENGLC) measures town wealth based on property tax and income per capita. Connecticut State Library collects and CTdata.org carries annual data.",
+      "type": "string"
+    },
+    "suppression": {
+      "ckan_name": "Suppression",
+      "value": "",
+      "type": "string"
+    },
+    "technical_notes": {
+      "ckan_name": "Technical Notes",
+      "value": "Municipalities revalue their grand lists at least every five years based on schedules established in statute. The Office of Policy and Management calculates the equalized net grand list from sales and assessment ratio information and the grand list reports filed by the municipality to account for the different assessment schedules.",
+      "type": "string"
+    },
+    "socrata": {
+      "ckan_name": "Socrata",
+      "value": "False",,
+      "type": "string"
+    },
+    "socrata_url": {
+      "ckan_name": "Socrata Dataset URL",
+      "value": "",,
+      "type": "string"
+    },
+    "domain": {
+      "ckan_name": "Domain",
+      "value": "Civic Vitality",
+      "type": "string"
+    },
+    "subdomain": {
+      "ckan_name": "Subdomain",
+      "value": "Engagement",
+      "type": "string"
+    },
+    "geography": {
+      "ckan_name": "Geography",
+      "value": "Town",
+      "type": "string",
+      "constraints": {"enum": ["Town", "County", "Town/County", "District", "Other"]}
+    },
+    "frequency": {
+      "ckan_name": "Frequency",
+      "value": "Annual",
+      "type": "string"
+    },
+    "years_in_catalog": {
+      "ckan_name": "Years in Catalog",
+      "value": [],
+      "type": "array"
+    },
+    "latest_year": {
+      "ckan_name": "Latest Year Available",
+      "value": "2016",
+      "type": "string"
+    },
+    "disabled_views": {
+      "ckan_name": "Disabled Views",
+      "value": [],
+      "type": "array",
+      "constraints": {"enum": ["map", "table", "bar", "line"]}
+    },
+    "units": {
+      "ckan_name": "Units",
+      "value": {
+        "Number": "",
+        "Percent": "%"
+      }
+    },
+    "default": {}
+  },
+  "spot_checks": [],
+  "dimension_groups": [
+    {"Measure Type": []},
+    {"Variable": []}
+  ]
+}
