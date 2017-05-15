@@ -1,6 +1,9 @@
+library(plyr)
 library(dplyr)
 library(datapkg)
 library(readxl)
+library(tidyr)
+
 ##################################################################
 #
 # Processing Script for Public Libraries
@@ -13,10 +16,151 @@ library(readxl)
 sub_folders <- list.files()
 data_location <- grep("raw", sub_folders, value=T)
 path_to_raw_data <- (paste0(getwd(), "/", data_location))
-lib_xlsx <- dir(path_to_raw_data, recursive=T, pattern = "CTPublicLibraries") 
-income_xlsx <- dir(path_to_raw_data, recursive=T, pattern = "CTLibStatProfile") 
-lib_df <- (read_excel(paste0(path_to_raw_data, "/", lib_xlsx), sheet=1, skip=0, col_types = "text"))
+hist_lib_xlsx <- dir(path_to_raw_data, recursive=T, pattern = "CTPublicLibraries") 
+income_xlsx <- dir(path_to_raw_data, recursive=T, pattern = "CTLibStatProfile-") 
+current_lib_xlsx <-  dir(path_to_raw_data, recursive=T, pattern = "Addendum") 
+hist_lib_df <- (read_excel(paste0(path_to_raw_data, "/", hist_lib_xlsx), sheet=1, skip=0, col_types = "text"))
 income_df <- (read_excel(paste0(path_to_raw_data, "/", income_xlsx), sheet=13, skip=0, col_types = "text"))
+
+#read in all sheets from current years summary table
+#read in entire xls file (all sheets)
+read_excel_allsheets <- function(filename) {
+  sheets <- readxl::excel_sheets(filename)
+  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+  names(x) <- sheets
+  x
+}
+
+#Create a list of all sheet data for all years
+#for (i in 1:length(current_lib_xlsx)) {
+  mysheets <- read_excel_allsheets(paste0(path_to_raw_data, "/", current_lib_xlsx[1]))
+  #Cycle through all sheets, extract sheet name, and assign each sheet (county) its own data frame
+  for (j in 1:length(mysheets)) {
+    current_sheet_name <- names(mysheets)[j]
+    current_sheet_file <- mysheets[[j]] 
+    assign(current_sheet_name, current_sheet_file)
+  }
+#}
+
+#Start to build columns for final df
+library_stats <- data.frame(stringsAsFactors = F)
+library_stats <- UseStatsA
+colnames(library_stats) <- library_stats[2,]  
+library_stats <- library_stats[-c(1:7),]
+library_stats <- library_stats %>% 
+  select(1,2,3,5,7,9,10,12) %>% 
+  rename(Town = `SELECTED LIBRARY USE STATISTICS BY TOWN/CITY - Towns with multiple reporting libraries are in gray`)
+
+library_services <- data.frame(stringsAsFactors = F)
+library_services <- ServicesA
+colnames(library_services) <- library_services[2,]
+library_services <- library_services[-c(1:7),]
+library_services <- library_services %>% 
+  select(1,14,17) %>% 
+  rename(Town = `SERVICES BY TOWN/CITY - Towns with multiple reporting libraries are in gray`)
+
+library_collection <- data.frame(stringsAsFactors = F)
+library_collection <- CollectionA
+colnames(library_collection) <- library_collection[2,]
+library_collection <- library_collection[-c(1:7),]
+#remove duplicate column names
+library_collection <- library_collection %>% 
+  select(1,21) %>% 
+  rename(Town = `COLLECTIONS BY TOWN/CITY - Towns with multiple libraries are in gray`)
+
+library_income <- data.frame(stringsAsFactors = F)
+library_income <- IncomeA
+colnames(library_income) <- library_income[2,]
+library_income <- library_income[-c(1:7),]
+library_income <- library_income %>% 
+  select(1,4,9,27) %>% 
+  rename(Town = `INCOME BY TOWN/CITY - Towns with multiple reporting libraries are in gray`)
+
+library_expenditures <- data.frame(stringsAsFactors = F)
+library_expenditures <- ExpenditureA
+colnames(library_expenditures) <- library_expenditures[2,]
+library_expenditures <- library_expenditures[-c(1:7),]
+library_expenditures <- library_expenditures %>% 
+  subset(., select=which(!duplicated(names(.)))) %>%  #only selects from those columns that are not duplicates
+  select(1,8,12,26) 
+names(library_expenditures)[names(library_expenditures) == "EXPENDITURES BY TOWN/CITY - Towns with multiple reporting libraries are in gray"] <- "Town"
+
+total_library <- join_all(list(library_stats, library_collection, library_income, library_expenditures, library_services), by = 'Town', type = 'full')
+total_library$Year <- 2016
+
+#Calculated columns
+#set variables to numeric
+total_library$"Population of Service Area 2015" <- as.numeric(total_library$"Population of Service Area 2015")
+total_library$"Total Circulation" <- as.numeric(total_library$"Total Circulation")
+total_library$"Total Physical Collection" <- as.numeric(total_library$"Total Physical Collection")
+total_library$"Internet Computers For The Public" <- as.numeric(total_library$"Internet Computers For The Public")
+total_library$"Expenditure on Library Materials All Types" <- as.numeric(total_library$"Expenditure on Library Materials All Types")
+total_library$"Total Library Visits" <- as.numeric(total_library$"Total Library Visits")
+total_library$"Library's Municipal Appropriation 2015/2016" <- as.numeric(total_library$"Library's Municipal Appropriation 2015/2016")
+total_library$"Total Operating Expenditures" <- as.numeric(total_library$"Total Operating Expenditures")
+total_library$"Total Operating Income" <- as.numeric(total_library$"Total Operating Income")
+total_library$"Total Program Attendance" <- as.numeric(total_library$"Total Program Attendance")
+total_library$"Reference Transactions" <- as.numeric(total_library$"Reference Transactions")
+total_library$"Total Registered Resident Borrowers (Principal Library)" <- as.numeric(total_library$"Total Registered Resident Borrowers (Principal Library)")
+total_library$"Income From State Funds" <- as.numeric(total_library$"Income From State Funds")
+total_library$"Wages & Salaries" <- as.numeric(total_library$"Wages & Salaries")
+
+
+total_library$"Circulation per capita" <- NA
+total_library$"Circulation per capita" <- total_library$"Total Circulation" / total_library$"Population of Service Area 2015"
+
+total_library$"Collection Items per capita" <- NA      
+total_library$"Collection Items per capita" <- total_library$"Total Physical Collection" / total_library$"Population of Service Area 2015"
+
+total_library$"Internet Use per capita" <- NA          
+total_library$"Internet Use per capita" <- total_library$"Internet Computers For The Public" / total_library$"Population of Service Area 2015"
+
+total_library$"Library Materials Expenditure per capita" <- NA    
+total_library$"Library Materials Expenditure per capita" <- total_library$"Expenditure on Library Materials All Types" / total_library$"Population of Service Area 2015"
+
+total_library$"Library Visits per capita" <- NA                   
+total_library$"Library Visits per capita" <- total_library$"Total Library Visits" / total_library$"Population of Service Area 2015"
+
+total_library$"Municipal Appropriation per capita" <- NA          
+total_library$"Municipal Appropriation per capita" <- total_library$"Library's Municipal Appropriation 2015/2016" / total_library$"Population of Service Area 2015"
+
+total_library$"Operating Expenditures per capita" <- NA           
+total_library$"Operating Expenditures per capita" <- total_library$"Total Operating Expenditures" / total_library$"Population of Service Area 2015"
+
+total_library$"Operating Income per capita" <- NA                 
+total_library$"Operating Income per capita" <- total_library$"Total Operating Income" / total_library$"Population of Service Area 2015"
+
+total_library$"Program Attendance per capita" <- NA               
+total_library$"Program Attendance per capita" <- total_library$"Total Program Attendance" / total_library$"Population of Service Area 2015"
+
+total_library$"Reference Questions per capita" <- NA              
+total_library$"Reference Questions per capita" <- total_library$"Reference Transactions" / total_library$"Population of Service Area 2015"
+
+total_library$"Registered Borrowers per capita" <- NA             
+total_library$"Registered Borrowers per capita" <- total_library$"Total Registered Resident Borrowers (Principal Library)" / total_library$"Population of Service Area 2015"
+
+total_library$"State Appropriation per capita" <- NA              
+total_library$"State Appropriation per capita" <- total_library$"Income From State Funds" / total_library$"Population of Service Area 2015"
+
+total_library$"Wages and Salaries Expenditures per capita" <- NA  
+total_library$"Wages and Salaries Expenditures per capita" <- total_library$"Wages & Salaries" / total_library$"Population of Service Area 2015"
+
+  
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+current_lib_df <- (read_excel(paste0(path_to_raw_data, "/", current_lib_xlsx), sheet=13, skip=0, col_types = "text"))
+
+
 lib_town_xwalk <- read.csv(paste0(path_to_raw_data, "/", "library_town_crosswalk.csv"), stringsAsFactors = F, header = T)
 
 #Isolate columns needed from lib_df for data set
@@ -45,6 +189,65 @@ lib_df <- lib_df[-1,]
 #rename town names
 names(lib_df)[names(lib_df) == "Selected Library StatisticsUse the Filter Tool to Choose Your Library"] <- "Town.Library"
 lib_df_merge <- merge(lib_df, lib_town_xwalk, by = "Town.Library", all=T)
+
+lib_df_merge[lib_df_merge == "N/A"] <- NA
+
+lib_df_agg <- data.frame(lapply(lib_df_merge, as.character), stringsAsFactors=FALSE)
+
+lib_df_agg$"Fiscal.Year" <- as.character(lib_df_agg$"Fiscal.Year") 
+lib_df_agg$"AENGLC.Wealth.Rank" <- as.numeric(lib_df_agg$"AENGLC.Wealth.Rank") 
+lib_df_agg$"Population.of.Service.Area" <- as.numeric(lib_df_agg$"Population.of.Service.Area")
+lib_df_agg$"Total.Library.Visits" <- as.numeric(lib_df_agg$"Total.Library.Visits")
+lib_df_agg$"Total.Registered.Borrowers" <- as.numeric(lib_df_agg$"Total.Registered.Borrowers")
+lib_df_agg$"Reference.Questions" <- as.numeric(lib_df_agg$"Reference.Questions")
+lib_df_agg$"Total.Circulation" <- as.numeric(lib_df_agg$"Total.Circulation")
+lib_df_agg$"Total.Programs" <- as.numeric(lib_df_agg$"Total.Programs")
+lib_df_agg$"Total.Program.Attendance" <- as.numeric(lib_df_agg$"Total.Program.Attendance")
+lib_df_agg$"Use.of.Public.Internet.Computers" <- as.numeric(lib_df_agg$"Use.of.Public.Internet.Computers")
+lib_df_agg$"Total.Collection.Size" <- as.numeric(lib_df_agg$"Total.Collection.Size")
+lib_df_agg$"Total.Operating.Income" <- as.numeric(lib_df_agg$"Total.Operating.Income")
+lib_df_agg$"Municipal.Appropriation" <- as.numeric(lib_df_agg$"Municipal.Appropriation")
+lib_df_agg$"Library.Materials.Expenditures" <- as.numeric(lib_df_agg$"Library.Materials.Expenditures")
+lib_df_agg$"Wages...Salaries.Expenditures" <- as.numeric(lib_df_agg$"Wages...Salaries.Expenditures") 
+lib_df_agg$"Operating.Expenditures" <- as.numeric(lib_df_agg$"Operating.Expenditures")
+
+lib_df_agg$Town.Library <- NULL
+
+lib_df_sum <- lib_df_agg %>% 
+              group_by(Town, Fiscal.Year) %>% 
+              summarise(sum_visits = sum(Total.Library.Visits), 
+                        sum_borrowers = sum(Total.Registered.Borrowers), #no 0s
+                        sum_ref_ques = sum(Reference.Questions),
+                        sum_circ = sum(Total.Circulation),
+                        sum_programs = sum(Total.Programs),
+                        sum_attendance = sum(Total.Program.Attendance),
+                        sum_internet = sum(Use.of.Public.Internet.Computers), #no 0s
+                        sum_collection = sum(Total.Collection.Size), #no 0s
+                        sum_op_income = sum(Total.Operating.Income),
+                        sum_mun_app = sum(Municipal.Appropriation),
+                        sum_lib_mat_exp = sum(Library.Materials.Expenditures), #no 0s
+                        sum_wage_sal_exp = sum(Wages...Salaries.Expenditures),
+                        sum_op_exp = sum(Operating.Expenditures)) %>% 
+              complete(Town, Fiscal.Year)
+
+#set 0 back to NAs
+# lib_df_sum$sum_borrowers[lib_df_sum$sum_borrowers == 0] <- NA
+# lib_df_sum$sum_internet[lib_df_sum$sum_internet == 0] <- NA
+# lib_df_sum$sum_collection[lib_df_sum$sum_collection == 0] <- NA
+# lib_df_sum$sum_lib_mat_exp[lib_df_sum$sum_lib_mat_exp == 0] <- NA
+
+
+
+
+agg_test <- aggregate(. ~ `Town` + `Fiscal.Year`, lib_df_agg, sum, na.rm=T)                       
+                        
+                        
+                        
+                        
+                        
+                        
+
+
 
 ######POPULATION#######################################################################################
 population <- lib_df_merge[,c("Fiscal Year", "Population of Service Area", "Town")]
