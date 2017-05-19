@@ -172,9 +172,9 @@
       "ckan_name": "Default",
 			"value": {
 				"Measure Type": "Number",
-		 		"District": "Hartford",
+		 		"Town": "Hartford",
 		 		"Year": ["2016"],
-		 		"Variable": "AENGLC Rank"
+		 		"Variable": "Circulation per capita"
 			},
 		  	"type": "object"
     }  
