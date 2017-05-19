@@ -194,7 +194,6 @@
         "value": 131
       } 
     }, 
-    
     {
       "type": "$lookup",
       "filter": {
@@ -219,8 +218,8 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 10.953473743
+        "number type": "float",
+        "value": 10.95
       } 
     },     
     {
@@ -233,8 +232,8 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 7.963334699
+        "number type": "float",
+        "value": 7.96
       } 
     },      
     {
@@ -275,11 +274,10 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 0.402521053
+        "number type": "float",
+        "value": 0.40
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -294,7 +292,6 @@
         "value": 25350 
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -305,11 +302,10 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 4.758138808
+        "number type": "float",
+        "value": 4.76
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -324,7 +320,6 @@
         "value": 31409
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -335,8 +330,8 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 0.649815753
+        "number type": "float",
+        "value": 0.65
       } 
     },     
     {
@@ -353,7 +348,6 @@
         "value": 414
       } 
     },     
-        
     {
       "type": "$lookup",
       "filter": {
@@ -368,7 +362,6 @@
         "value": 40456
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -379,11 +372,10 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 0.666494919
+        "number type": "float",
+        "value": 0.67
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -398,7 +390,6 @@
         "value": -6666
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -409,11 +400,10 @@
       },
       "expected": {
         "type": "$match",
-        "number type": "int",
-        "value": 0.606398275
+        "number type": "float",
+        "value": 0.61
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -428,7 +418,6 @@
         "value": 37012
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -440,10 +429,9 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 2.72339388
+        "value": 2.72
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -458,7 +446,6 @@
         "value": 81000
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -470,10 +457,9 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 41.067239212
+        "value": 41.07
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -485,10 +471,9 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 574453
+        "value": 574452.5
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -500,10 +485,9 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 22.166850908
+        "value": 22.17
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -518,7 +502,6 @@
         "value": 542561
       } 
     },     
-        
     {
       "type": "$lookup",
       "filter": {
@@ -530,10 +513,9 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 10.96344748
+        "value": 10.96
       } 
     },      
-        
     {
       "type": "$lookup",
       "filter": {
@@ -587,7 +569,7 @@
       "expected": {
         "type": "$match",
         "number type": "float",
-        "value": 46.291426033
+        "value": 46.29
       } 
     }    
   ],
