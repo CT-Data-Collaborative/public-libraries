@@ -3,12 +3,14 @@ Andover,Andover
 Ansonia,Ansonia
 Ashford-Babcock,Ashford
 Ashford,Ashford
+Ashford - Babcock,Ashford
 Avon,Avon
 Beacon Falls,Beacon Falls
 Berlin - East Berlin,Berlin
 Berlin Free,Berlin
 Berlin-Peck,Berlin
 Berlin,Berlin
+Berlin - Berlin-Peck,Berlin
 East Berlin,Berlin
 Bethany - Clark,Bethany
 Bethany,Bethany
@@ -52,6 +54,7 @@ Deep River,Deep River
 Derby,Derby
 Derby - Derby Neck,Derby
 Derby Neck,Derby
+Derby - Derby Public,Derby
 Durham,Durham
 East Granby,East Granby
 East Haddam,East Haddam
@@ -75,9 +78,11 @@ Ellington,Ellington
 Enfield,Enfield
 Essex,Essex
 Essex - Ivoryton,Essex
+Essex - Essex Library,Essex
 Fairfield,Fairfield
 Fairfield - Pequot,Fairfield
 Fairfield -  Pequot,Fairfield
+Fairfield - Fairfield Public,Fairfield
 Farmington,Farmington
 Franklin - Janet Carlson,Franklin
 Franklin,Franklin
@@ -92,11 +97,13 @@ Goshen,Goshen
 Granby,Granby
 Greenwich,Greenwich
 Greenwich - Perrot,Greenwich
+Greenwich - Greenwich Library,Greenwich
 Griswold - Slater,Griswold
 Griswold,Griswold
 Groton,Groton
 Groton - Bill,Groton
 Groton - Mystic,Groton
+Groton - Groton Public,Groton
 Guilford,Guilford
 Haddam - Brainerd,Haddam
 Haddam,Haddam
@@ -124,6 +131,7 @@ Manchester,Manchester
 Mansfield,Mansfield
 Marlborough-Richmond,Marlborough
 Marlborough,Marlborough
+Marlborough - Richmond,Marlborough
 Meriden,Meriden
 Middlebury,Middlebury
 Middlefield - Levi Coe,Middlefield
@@ -146,6 +154,7 @@ New Hartford - Bakerville,New Hartford
 New Hartford-Bakerville,New Hartford
 New Hartford-Licia M.B.,New Hartford
 New Hartford,New Hartford
+New Hartford - Licia M.B.,New Hartford
 New Haven,New Haven
 New London,New London
 New Milford,New Milford
@@ -165,6 +174,7 @@ North Stonington,North Stonington
 Norwalk,Norwalk
 Norwalk - East,Norwalk
 Norwalk - Rowayton,Norwalk
+Norwalk - Norwalk Public,Norwalk
 Norwich - Otis,Norwich
 Norwich,Norwich
 Old Lyme - Phoebe,Old Lyme
@@ -192,6 +202,7 @@ Redding,Redding
 Ridgefield,Ridgefield
 Rocky Hill-Cora Belden,Rocky Hill
 Rocky Hill,Rocky Hill
+Rocky Hill - Cora Belden,Rocky Hill
 Roxbury - Minor,Roxbury
 Roxbury,Roxbury
 Salem,Salem

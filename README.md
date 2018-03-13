@@ -1,7 +1,5 @@
 Public Libraries
 
-[![Build Status](https://travis-ci.org/CT-Data-Collaborative/public-libraries.svg?branch=master)](https://travis-ci.org/CT-Data-Collaborative/public-libraries)
-
 Public Libraries reports the total and per capita service use and finances of public libraries.
 
 Data Source: <http://libguides.ctstatelibrary.org/dld/stats/overview>

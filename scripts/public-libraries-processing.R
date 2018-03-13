@@ -18,15 +18,14 @@ sub_folders <- list.files()
 data_location <- grep("raw", sub_folders, value=T)
 path_to_raw_data <- (paste0(getwd(), "/", data_location))
 path_to_income_data <- (paste0(path_to_raw_data, "/", "for_Income"))
-hist_lib_xlsx <- dir(path_to_raw_data, recursive=T, pattern = "CTPublicLibraries") 
-income_xlsx <- dir(path_to_income_data, recursive=T, pattern = "Profile_") 
-hist_lib_df <- (read_excel(paste0(path_to_raw_data, "/", hist_lib_xlsx), sheet=1, skip=0, col_types = "text"))
-x <- "Town"
+hist_lib_xlsx <- dir(path_to_raw_data,  pattern = "CTPublicLibraries") 
+income_xlsx <- dir(path_to_income_data, pattern = "Profile_") 
+hist_lib_df <- (read_excel(paste0(path_to_raw_data, "/", hist_lib_xlsx), sheet=1, skip=1, col_types = "text"))
 
 lib_town_xwalk <- read.csv(paste0(path_to_raw_data, "/", "library_town_crosswalk_complete.csv"), stringsAsFactors = F, header = T)
 
 #Isolate columns needed from lib_df for data set
-hist_lib_df <- hist_lib_df[,c("Selected Library StatisticsUse the Filter Tool to Choose Your Library", 
+hist_lib_df <- hist_lib_df[,c("Use the Filter Tool to Choose Your Library", 
                               "Fiscal Year", 
                               "AENGLC Wealth Rank", 
                               "Population of Service Area", 
@@ -49,7 +48,7 @@ hist_lib_df <- hist_lib_df[,c("Selected Library StatisticsUse the Filter Tool to
 hist_lib_df <- hist_lib_df[-1,]
 
 #rename library name column
-names(hist_lib_df)[names(hist_lib_df) == "Selected Library StatisticsUse the Filter Tool to Choose Your Library"] <- "Town.Library"
+names(hist_lib_df)[names(hist_lib_df) == "Use the Filter Tool to Choose Your Library"] <- "Town.Library"
 lib_df_merge <- merge(hist_lib_df, lib_town_xwalk, by = "Town.Library", all=T)
 
 #fix manual N/As
@@ -59,12 +58,15 @@ lib_df_merge[lib_df_merge == "N/A"] <- NA
 lib_df_agg <- data.frame(lapply(lib_df_merge, as.character), stringsAsFactors=FALSE)
 
 #convert certain columns to numeric (so they can be summed)
-for (i in 4:17) {
+for (i in 3:17) {
   lib_df_agg[,i] <- as.numeric(as.character(lib_df_agg[,i]))           
 }
 
 #remove library names
 lib_df_agg$Town.Library <- NULL
+
+#Set "Town" to the first column
+x <- "Town"
 lib_df_agg <- lib_df_agg[c(x, setdiff(names(lib_df_agg), x))]
 
 #remove rows where year=NA
@@ -121,10 +123,10 @@ read_excel_allsheets <- function(filename) {
   x
 }
 
+cols <- c("income", "librarydata")
 for (i in 1:length(income_xlsx)) {
   mysheets <- read_excel_allsheets(paste0(path_to_income_data, "/", income_xlsx[i]))
-  income_sheet_index <- grep("income", names(mysheets), ignore.case=T)
-  #income_sheet_name<- grep("income", names(mysheets), ignore.case=T, value=T)
+  income_sheet_index <- grep(paste(cols, collapse="|"), names(mysheets), value=T, ignore.case=T)
   get_year <- as.numeric(substr(unique(unlist(gsub("[^0-9]", "", unlist(income_xlsx[i])), "")), 1, 4))
   current_sheet_file <- mysheets[[income_sheet_index]] 
   assign(paste0("Income_", get_year), current_sheet_file)
@@ -134,6 +136,8 @@ dfs <- ls()[sapply(mget(ls(), .GlobalEnv), is.data.frame)]
 income_data <- grep("Income", dfs, value=T)
 
 Income_2009 <- Income_2009[-c(3:4)] #quick fix so all years columns line up
+Income_2017 <- Income_2017[-c(3:224)] #quick fix so all years columns line up
+
 #Extract Income columns from each year
 income_all_years <- data.frame(stringsAsFactors = F)
 for (i in 1:length(income_data)) {
@@ -146,47 +150,37 @@ for (i in 1:length(income_data)) {
   income_all_years <- rbind(income_all_years, current_file)
 }
 
-#remove (no data provided) from any Town.Library name
-income_all_years[["Town.Library"]][income_all_years$"Town.Library" == "Ridgefield (no data provided)"]<- "Ridgefield"
-#remove rows where Town.Library = NA
-income_all_years <- income_all_years[!is.na(income_all_years$Town.Library),]
-#remove rows where Town.Library = LIBRARIES REPORTING or STATEWIDE TOTAL
-income_all_years <- income_all_years[income_all_years$Town.Library!="LIBRARIES REPORTING" & income_all_years$Town.Library != "STATEWIDE TOTAL", ]
-
-#set NAs to 0
-income_all_years[is.na(income_all_years)] <- 0
-
 #merge in xwalk file
-lib_town_xwalk_for_income <- read.csv(paste0(path_to_raw_data, "/", "library_town_crosswalk_complete.csv"), stringsAsFactors = F, header = T)
+income_all_years_merge <- merge(income_all_years, lib_town_xwalk, by = "Town.Library", all.y = T)
 
-complete_income <- merge(income_all_years, lib_town_xwalk_for_income, by = "Town.Library", all.x = T)
+#remove rows where year is NA
+income_all_years_merge <- income_all_years_merge[!is.na(income_all_years_merge$Fiscal.Year),]
 
-complete_income$Town.Library <- NULL
+income_all_years_merge$Town.Library <- NULL
 
-complete_income_sum <- complete_income %>% 
+income_all_years_merge_sum <- income_all_years_merge %>% 
   group_by(Town, Fiscal.Year) %>%   
   summarise(State.Appropriation = sum(as.numeric(`State Appropriation`)))
 
 #backfill towns and years
-years <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002",
-           "2003", "2004", "2005", "2006", "2007", "2008", "2009",
-           "2010", "2011", "2012", "2013", "2014","2015", "2016")
+years <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", 
+           "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
 backfill <- expand.grid (
   `Fiscal.Year` = years,
-  `Town` = unique(complete_income_sum$Town)
+  `Town` = unique(income_all_years_merge_sum$Town)
 )
 
-complete_state_appr <- merge(complete_income_sum, backfill, by = c("Town", "Fiscal.Year"), all.y=T)
+complete_state_appr <- merge(income_all_years_merge_sum, backfill, by = c("Town", "Fiscal.Year"), all.y=T)
 
 complete_total <- merge(total_sum, backfill, by = c("Town", "Fiscal.Year"), all.y=T)
 
 #bind state appropriation with rest of df
-
 public_lib <- merge(complete_total, complete_state_appr, by = c("Town", "Fiscal.Year"))
 
 
 ######################################################################################################
-#Calculated columns
+
 #Rename columns
 public_lib <- plyr::rename(public_lib, c("Fiscal.Year"="Year",                
                                          "Population.of.Service.Area"="Population of Service Area",
@@ -206,6 +200,7 @@ public_lib <- plyr::rename(public_lib, c("Fiscal.Year"="Year",
                                          "Operating.Expenditures"="Operating Expenditures",
                                          "State.Appropriation"="State Appropriation"))
 
+#Calculated columns
 public_lib$"Circulation per capita"                     <- public_lib$"Circulation" / public_lib$"Population of Service Area"
 public_lib$"Collection Size per capita"                 <- public_lib$"Collection Size" / public_lib$"Population of Service Area"
 public_lib$"Internet Computer Use per capita"           <- public_lib$"Internet Computer Use" / public_lib$"Population of Service Area"
@@ -317,12 +312,13 @@ public_lib_long_fips$"Measure Type"[which(public_lib_long_fips$Variable %in% c("
 
 #Order columns
 public_lib_long_fips <- public_lib_long_fips %>% 
-  select(`Town`, `FIPS`, `Year`, `Variable`, `Measure Type`, `Value`)
+  select(Town, FIPS, Year, `Measure Type`, Variable,  Value) %>% 
+  arrange(Town, Year, `Measure Type`, Variable)
 
 # Write to File
 write.table(
   public_lib_long_fips,
-  file.path(getwd(), "data", "public_libraries_1996_2016.csv"),
+  file.path(getwd(), "data", "public_libraries_1996_2017.csv"),
   sep = ",",
   row.names = F
 )
