@@ -1,0 +1,624 @@
+{
+  "name": "public-libraries",
+  "datapackage_version": "1.0-beta.18",
+  "title": "Public Libraries",
+  "description": "Public Libraries reports the total and per capita service use and finances of public libraries.",
+  "version": "1.0",
+  "licenses": [{
+    "url": "http://opendatacommons.org/licenses/pddl/",
+    "name": "Open Data Commons Public Domain",
+    "version": "1.0",
+    "id": "odc-pddl"
+  }],
+  "sources": [{
+    "name": "ctlib",
+    "web": ""
+  }],
+  "author":[{
+    "name": "Jenna Daly",
+    "email": "jdaly@ctdata.org",
+    "web": "http://ctdata.org"
+  }],
+  "contributor": [],
+  "resources": [{
+    "path": "data/public_libraries_1996_2017.csv",
+    "format": "csv",
+    "schema": {
+      "fields": [{
+          "name": "Town",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "FIPS",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "Year",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "Measure Type",
+          "type": "string",
+          "dimension": true,
+          "constraints": {
+			      "enum": [
+		          "Rank", 
+		          "Number",
+		          "Currency"
+		        ]
+			    }
+        }, {
+          "name": "Variable",
+          "type": "string",
+          "dimension": true, 
+          "constraints": {
+		        "enum": [
+              "AENGLC Rank",
+              "Circulation",
+              "Circulation per capita",
+              "Collection Size per capita",
+              "Collection Size",
+              "Internet Computer Use",
+              "Internet Computer Use per capita",
+              "Library Visits",
+              "Library Visits per capita",
+              "Program Attendance",
+              "Program Attendance per capita",
+              "Programs",
+              "Reference Questions",
+              "Reference Questions per capita",
+              "Registered Borrowers",
+              "Registered Borrowers per capita",
+              "Library Materials Expenditures",
+              "Library Materials Expenditures per capita",
+              "Municipal Appropriation",
+              "Municipal Appropriation per capita",
+              "Operating Expenditures",
+              "Operating Expenditures per capita",
+              "Operating Income",
+              "Operating Income per capita",
+              "State Appropriation",
+              "State Appropriation per capita",
+              "Wages and Salaries Expenditures",
+              "Wages and Salaries Expenditures per capita"		          
+            ]
+			    }
+        }, {
+          "name": "Value",
+          "type": "Number",
+          "dimension": false
+        }]
+      }
+    }
+  ],
+  "last_modified": "03/13/2018",
+  "ckan_extras": {
+    "full_description": {
+      "ckan_name": "Full Description",
+      "value": "Public libraries provide free borrowing privileges and services to their patrons and receive financial support from local tax funds. Public libraries may be municipal, which are established by and administrative units of local government, or association, which are not units of town government but receive some public funding. Some towns are served by more than one public library. The Public Libraries data set aggregates individual library services and finance data to the town level. Library visits include all persons entering a library for any purpose, including persons attending meetings or activities and persons requiring no staff assistance. Circulation counts all library materials of all formats lent out for use outside the library, including renewals. Registered borrowers are all town residents to whom a library has issued membership. Reference questions counts all interactions in which library staff provide information, knowledge, or recommendations to patrons. Town tax appropriation indicates the funds allotted to the library's operation budget from the town. The Adjusted Equalized Net Grand List per Capita (AENGLC) measures town wealth based on property tax and income per capita. Connecticut State Library collects and CTdata.org carries annual data.",
+      "type": "string"
+    },
+    "suppression": {
+      "ckan_name": "Suppression",
+      "value": "",
+      "type": "string"
+    },
+    "technical_notes": {
+      "ckan_name": "Technical Notes",
+      "value": "Municipalities revalue their grand lists at least every five years based on schedules established in statute. The Office of Policy and Management calculates the equalized net grand list from sales and assessment ratio information and the grand list reports filed by the municipality to account for the different assessment schedules.",
+      "type": "string"
+    },
+    "socrata": {
+      "ckan_name": "Socrata",
+      "value": "False",
+      "type": "string"
+    },
+    "socrata_url": {
+      "ckan_name": "Socrata Dataset URL",
+      "value": "",
+      "type": "string"
+    },
+    "domain": {
+      "ckan_name": "Domain",
+      "value": "Civic Vitality",
+      "type": "string"
+    },
+    "subdomain": {
+      "ckan_name": "Subdomain",
+      "value": "Engagement",
+      "type": "string"
+    },
+    "geography": {
+      "ckan_name": "Geography",
+      "value": "Town",
+      "type": "string",
+      "constraints": {"enum": ["Town", "County", "Town/County", "District", "Other"]}
+    },
+    "frequency": {
+      "ckan_name": "Frequency",
+      "value": "Annual",
+      "type": "string"
+    },
+    "years_in_catalog": {
+      "ckan_name": "Years in Catalog",
+      "value": ["1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014","2015", "2016", "2017"],
+      "type": "array"
+    },
+    "latest_year": {
+      "ckan_name": "Latest Year Available",
+      "value": "2017",
+      "type": "string"
+    },
+    "disabled_views": {
+      "ckan_name": "Disabled Views",
+      "value": [],
+      "type": "array",
+      "constraints": {"enum": ["map", "table", "bar", "line"]}
+    },
+    "units": {
+      "ckan_name": "Units",
+      "value": {
+        "Number": "",
+        "Percent": "%",
+        "Currency": "$"
+      }
+    },
+    "expected_number_of_geographies": {
+		  "ckan_name": "Expected Number of Unique Geographies",
+		  "value": 165,
+		  "type": "string"
+		},     
+    "default": {      
+      "ckan_name": "Default",
+			"value": {
+				"Measure Type": "Number",
+		 		"Town": "Hartford",
+		 		"Year": ["2017"],
+		 		"Variable": "Circulation per capita"
+			},
+		  	"type": "object"
+    }  
+  },
+  "spot_checks": [
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Ashford",
+        "Year": "1996",
+        "Variable": "AENGLC Rank",
+        "Measure Type": "Rank" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": 131
+      } 
+    }, 
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Franklin",
+        "Year": "1997",
+        "Variable": "Circulation",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": -6666
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Groton",
+        "Year": "1998",
+        "Variable": "Circulation per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 10.95
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "North Stonington",
+        "Year": "1999",
+        "Variable": "Collection Size per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 7.96
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Plymouth",
+        "Year": "2000",
+        "Variable": "Collection Size",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": -6666
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Portland",
+        "Year": "2001",
+        "Variable": "Internet Computer Use",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": -6666
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Ansonia",
+        "Year": "2005",
+        "Variable": "Internet Computer Use per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 0.40
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Harwinton",
+        "Year": "2003",
+        "Variable": "Library Visits",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": 25350 
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Hartford",
+        "Year": "2001",
+        "Variable": "Library Visits per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 4.76
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "West Hartford",
+        "Year": "2004",
+        "Variable": "Program Attendance",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": 31409
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Litchfield",
+        "Year": "2006",
+        "Variable": "Program Attendance per capita",    
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 0.65
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "East Haddam",
+        "Year": "2007",
+        "Variable": "Programs",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": 414
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Groton",
+        "Year": "2008",
+        "Variable": "Reference Questions",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": 40456
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Norwalk",
+        "Year": "2009",
+        "Variable": "Reference Questions per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 0.67
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Ridgefield",
+        "Year": "2010",
+        "Variable": "Registered Borrowers",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "int",
+        "value": -6666
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Sharon",
+        "Year": "2011",
+        "Variable": "Registered Borrowers per capita",
+        "Measure Type": "Number" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 0.61
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Torrington",
+        "Year": "2012",
+        "Variable": "Library Materials Expenditures",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 37012
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Brooklyn",
+        "Year": "2013",
+        "Variable": "Library Materials Expenditures per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 2.72
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Kent",
+        "Year": "2014",
+        "Variable": "Municipal Appropriation",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 81000
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "North Branford",
+        "Year": "2015",
+        "Variable": "Municipal Appropriation per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 41.07
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Tolland",
+        "Year": "2016",
+        "Variable": "Operating Expenditures",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 574452.5
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Branford",
+        "Year": "1996",
+        "Variable": "Operating Expenditures per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 22.17
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Derby",
+        "Year": "1998",
+        "Variable": "Operating Income",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 542561
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Beacon Falls",
+        "Year": "2000",
+        "Variable": "Operating Income per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 10.96
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Norwalk",
+        "Year": "2011",
+        "Variable": "State Appropriation",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 7951
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Bridgeport",
+        "Year": "2006",
+        "Variable": "State Appropriation per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": -6666
+      } 
+    },      
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Greenwich",
+        "Year": "2004",
+        "Variable": "Wages and Salaries Expenditures",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 5287257
+      } 
+    },     
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Essex",
+        "Year": "2008",
+        "Variable": "Wages and Salaries Expenditures per capita",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 46.29
+      } 
+    }, 
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Darien",
+        "Year": "2017",
+        "Variable": "State Appropriation",
+        "Measure Type": "Currency" 
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 57229
+      } 
+    }  
+  ],
+  "dimension_groups": [
+    {
+      "Variable": [
+        "AENGLC Rank",
+        "Circulation",
+        "Circulation per capita",
+        "Collection Size per capita",
+        "Collection Size",
+        "Internet Computer Use",
+        "Internet Computer Use per capita",
+        "Library Visits",
+        "Library Visits per capita",
+        "Program Attendance",
+        "Program Attendance per capita",
+        "Programs",
+        "Reference Questions",
+        "Reference Questions per capita",
+        "Registered Borrowers",
+        "Registered Borrowers per capita",
+        "Library Materials Expenditures",
+        "Library Materials Expenditures per capita",
+        "Municipal Appropriation",
+        "Municipal Appropriation per capita",
+        "Operating Expenditures",
+        "Operating Expenditures per capita",
+        "Operating Income",
+        "Operating Income per capita",
+        "State Appropriation",
+        "State Appropriation per capita",
+        "Wages and Salaries Expenditures",
+        "Wages and Salaries Expenditures per capita"       
+      ]
+    }
+  ]
+}
